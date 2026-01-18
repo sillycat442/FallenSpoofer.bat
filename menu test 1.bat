@@ -1,5 +1,38 @@
 @echo off
 set "LOCAL_VERSION=1.0"
+:: ===== AUTO UPDATER =====
+set "REPO_RAW=https://raw.githubusercontent.com/YOURNAME/FallenSpoofer/main"
+
+set "TEMP_VER=%temp%\fallen_version.txt"
+set "NEW_BAT=%temp%\FallenSpoofer_new.bat"
+
+echo Checking for updates...
+curl -s "%REPO_RAW%/version.txt" > "%TEMP_VER%"
+
+if errorlevel 1 goto SKIP_UPDATE
+
+set /p ONLINE_VERSION=<"%TEMP_VER%"
+
+if not "%ONLINE_VERSION%"=="%LOCAL_VERSION%" (
+    echo Update found! (%LOCAL_VERSION% -> %ONLINE_VERSION%)
+    echo Downloading new version...
+
+    curl -s "%REPO_RAW%/FallenSpoofer.bat" > "%NEW_BAT%"
+
+    if exist "%NEW_BAT%" (
+        echo Installing update...
+        timeout /t 2 >nul
+
+        copy /y "%NEW_BAT%" "%~f0" >nul
+
+        echo Update complete. Restarting...
+        start "" "%~f0"
+        exit
+    )
+)
+
+:SKIP_UPDATE
+
 title Fallen Spoofer - Initializing...
 
 :: --- Force Admin ---
@@ -271,6 +304,7 @@ if exist "%roblox1%" (
 echo.
 pause
 goto menu
+
 
 
 
