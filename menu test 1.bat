@@ -1,4 +1,5 @@
 @echo off
+set "LOCAL_VERSION=1.0"
 title Fallen Spoofer - Initializing...
 
 :: --- Force Admin ---
@@ -270,6 +271,7 @@ if exist "%roblox1%" (
 echo.
 pause
 goto menu
+
 
 
 
